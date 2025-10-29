@@ -60,29 +60,17 @@ int main()
     // srand "seeds" the random number generator, so your "random sequence" isn't the same every program run.
     srand(time(nullptr));
     
-    // 3 random integers between 0 and 2 
-    //int a = rand() % 3;
-    //int b = rand() % 3;
-    //int c = rand() % 3;
+    Vector2 sierpinski_positions[NUM_VERTICES];
+    Vector3 sierpinski_colours[NUM_VERTICES];
+    Vector2 current_position = TRIANGLE_POSITIONS[0];
 
-    // 3 random floating-points between
-    //float a = Random(0.0f, 1.0f);
-    //float b = Random(0.0f, 1.0f);
-    //float c = Random(0.0f, 1.0f);
-
-    Vector2 line_vertex_positions2[8];
-
-    line_vertex_positions2[0] = Vector2Lerp(line_vertex_positions[0], line_vertex_positions[1], 0.5f);
-    line_vertex_positions2[1] = Vector2Lerp(line_vertex_positions[2], line_vertex_positions[3], 0.5f);
-
-    line_vertex_positions2[2] = Vector2Lerp(line_vertex_positions[2], line_vertex_positions[3], 0.5f);
-    line_vertex_positions2[3] = Vector2Lerp(line_vertex_positions[4], line_vertex_positions[5], 0.5f);
-
-    line_vertex_positions2[4] = Vector2Lerp(line_vertex_positions[4], line_vertex_positions[5], 0.5f);
-    line_vertex_positions2[5] = Vector2Lerp(line_vertex_positions[6], line_vertex_positions[7], 0.5f);
-    
-    line_vertex_positions2[6] = Vector2Lerp(line_vertex_positions[6], line_vertex_positions[7], 0.5f);
-    line_vertex_positions2[7] = Vector2Lerp(line_vertex_positions[0], line_vertex_positions[1], 0.5f);
+    for (int i = 0; i < NUM_VERTICES; ++i)
+    {
+        int n = rand() % 3;
+        current_position = Vector2Lerp(current_position, TRIANGLE_POSITIONS[n], 0.5f);
+        sierpinski_positions[i] = current_position;
+        sierpinski_colours[i] = TRIANGLE_COLOURS[n];
+    }
 
     CreateWindow(800, 800, "Graphics 1");
     
@@ -93,13 +81,13 @@ int main()
     GLuint vbo_line_positions;
     glGenBuffers(1, &vbo_line_positions);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_line_positions);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(line_vertex_positions), line_vertex_positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sierpinski_positions), sierpinski_positions, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 
     GLuint vbo_line_colors;
     glGenBuffers(1, &vbo_line_colors);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_line_colors);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(line_vertex_colors), line_vertex_colors, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sierpinski_positions), sierpinski_positions, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 
     GLuint vao_line;
@@ -135,7 +123,7 @@ int main()
         int loc_mvp = glGetUniformLocation(a2_lines_shader, "u_mvp");
         glUseProgram(a2_lines_shader);
         glUniformMatrix4fv(loc_mvp, 1, GL_FALSE, MatrixToFloat(mvp));
-        glDrawArrays(GL_LINES, 0, line_vertex_count);
+        glDrawArrays(GL_LINES, 0, NUM_VERTICES);
         glUseProgram(GL_NONE);
         
         glBindVertexArray(GL_NONE);
