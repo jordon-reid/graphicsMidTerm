@@ -76,7 +76,7 @@ int main()
     
     GLuint a2_lines_vert = CreateShader(GL_VERTEX_SHADER, "./assets/shaders/a2_lines.vert");
     GLuint a2_lines_frag = CreateShader(GL_FRAGMENT_SHADER, "./assets/shaders/a2_lines.frag");
-    GLuint a2_lines_shader = CreateProgram(a2_lines_vert, a2_lines_frag);
+    GLuint a2_points_shader = CreateProgram(a2_lines_vert, a2_lines_frag);
 
     GLuint vbo_point_positions;
     glGenBuffers(1, &vbo_point_positions);
@@ -87,7 +87,7 @@ int main()
     GLuint vbo_point_colours;
     glGenBuffers(1, &vbo_point_colours);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_point_colours);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(sierpinski_positions), sierpinski_positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sierpinski_colours), sierpinski_colours, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 
     GLuint vao_points;
@@ -117,18 +117,17 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glLineWidth(5.0f);
+        glPointSize(1.0f);
         glBindVertexArray(vao_points);
 
-        int loc_mvp = glGetUniformLocation(a2_lines_shader, "u_mvp");
-        glUseProgram(a2_lines_shader);
+        int loc_mvp = glGetUniformLocation(a2_points_shader, "u_mvp");
+        glUseProgram(a2_points_shader);
         glUniformMatrix4fv(loc_mvp, 1, GL_FALSE, MatrixToFloat(mvp));
-        glDrawArrays(GL_LINES, 0, NUM_VERTICES);
+        glDrawArrays(GL_POINTS, 0, NUM_VERTICES);
         glUseProgram(GL_NONE);
         
         glBindVertexArray(GL_NONE);
-        glLineWidth(1.0f);
-
+    
         BeginGui();
         //ImGui::ShowDemoWindow(nullptr);
         EndGui();
@@ -138,7 +137,7 @@ int main()
 
     glDeleteVertexArrays(1, &vao_points);
     glDeleteBuffers(1, &vbo_point_positions);
-    glDeleteProgram(a2_lines_shader);
+    glDeleteProgram(a2_points_shader);
     glDeleteShader(a2_lines_frag);
     glDeleteShader(a2_lines_vert);
 
