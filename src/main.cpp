@@ -9,36 +9,50 @@ RMAPI float Random(float min, float max)
     return min + (rand() / ((float)RAND_MAX / (max - min)));
 }
 
-static const int line_vertex_count = 8;
-static const Vector2 line_vertex_positions[line_vertex_count]
+const int NUM_VERTICES = 30000;
+
+static const Vector2 TRIANGLE_POSITIONS[3]
 {
-    { -1.0f,  -1.0f },   // bottom-left
-    {  1.0f,  -1.0f },   // bottom-right
-
-    {  1.0f, -1.0f },   // bottom-right
-    {  1.0f,  1.0f },   // top-right
-
-    {   1.0f,  1.0f },   // top-right
-    {  -1.0f,  1.0f },   // top-left
-
-    { -1.0f,   1.0f },   // top-left
-    { -1.0f,  -1.0f }    // bottom-left
+    {-1.0f, -1.0f},
+    {1.0f, -1.0f},
+    {0.0f, 1.0f}
 };
-
-static const Vector3 line_vertex_colors[line_vertex_count]
+static const Vector3 TRIANGLE_COLOURS[3]
 {
-    Vector3UnitX,
-    Vector3UnitY,
-
-    Vector3UnitZ,
-    Vector3Ones,
-
-    Vector3UnitX,
-    Vector3UnitY,
-
-    Vector3UnitZ,
-    Vector3Ones
+    {1.0f, 0.0f, 0.0f},
+    {0.0f, 1.0f, 0.0f},
+    {0.0f, 0.0f, 1.0f}
 };
+//static const int line_vertex_count = 8;
+//static const Vector2 line_vertex_positions[line_vertex_count]
+//{
+//    { -1.0f,  -1.0f },   // bottom-left
+//    {  1.0f,  -1.0f },   // bottom-right
+//
+//    {  1.0f, -1.0f },   // bottom-right
+//    {  1.0f,  1.0f },   // top-right
+//
+//    {   1.0f,  1.0f },   // top-right
+//    {  -1.0f,  1.0f },   // top-left
+//
+//    { -1.0f,   1.0f },   // top-left
+//    { -1.0f,  -1.0f }    // bottom-left
+//};
+//
+//static const Vector3 line_vertex_colors[line_vertex_count]
+//{
+//    Vector3UnitX,
+//    Vector3UnitY,
+//
+//    Vector3UnitZ,
+//    Vector3Ones,
+//
+//    Vector3UnitX,
+//    Vector3UnitY,
+//
+//    Vector3UnitZ,
+//    Vector3Ones
+//};
 
 int main()
 {
