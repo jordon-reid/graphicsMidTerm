@@ -78,28 +78,28 @@ int main()
     GLuint a2_lines_frag = CreateShader(GL_FRAGMENT_SHADER, "./assets/shaders/a2_lines.frag");
     GLuint a2_lines_shader = CreateProgram(a2_lines_vert, a2_lines_frag);
 
-    GLuint vbo_line_positions;
-    glGenBuffers(1, &vbo_line_positions);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_line_positions);
+    GLuint vbo_point_positions;
+    glGenBuffers(1, &vbo_point_positions);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_point_positions);
     glBufferData(GL_ARRAY_BUFFER, sizeof(sierpinski_positions), sierpinski_positions, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 
-    GLuint vbo_line_colors;
-    glGenBuffers(1, &vbo_line_colors);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_line_colors);
+    GLuint vbo_point_colours;
+    glGenBuffers(1, &vbo_point_colours);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_point_colours);
     glBufferData(GL_ARRAY_BUFFER, sizeof(sierpinski_positions), sierpinski_positions, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 
-    GLuint vao_line;
-    glGenVertexArrays(1, &vao_line);
-    glBindVertexArray(vao_line);
+    GLuint vao_points;
+    glGenVertexArrays(1, &vao_points);
+    glBindVertexArray(vao_points);
 
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_line_positions);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_point_positions);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), nullptr);
 
     glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_line_colors);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_point_colours);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), nullptr);
     
     glBindVertexArray(GL_NONE);
@@ -118,7 +118,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glLineWidth(5.0f);
-        glBindVertexArray(vao_line);
+        glBindVertexArray(vao_points);
 
         int loc_mvp = glGetUniformLocation(a2_lines_shader, "u_mvp");
         glUseProgram(a2_lines_shader);
@@ -136,8 +136,8 @@ int main()
         Loop();
     }
 
-    glDeleteVertexArrays(1, &vao_line);
-    glDeleteBuffers(1, &vbo_line_positions);
+    glDeleteVertexArrays(1, &vao_points);
+    glDeleteBuffers(1, &vbo_point_positions);
     glDeleteProgram(a2_lines_shader);
     glDeleteShader(a2_lines_frag);
     glDeleteShader(a2_lines_vert);
